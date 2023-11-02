@@ -48,7 +48,8 @@ export const updateContactById = async (id, data) => {
   if (index === -1) {
     return null;
   }
-  contacts[index] = { id, ...data }; //
+  const updatedContact = { ...contacts[index], ...data }; // Об'єднання даних контакту з переданими даними для оновлення для збереження всіх даних у випадку оновлення лише одного параметру
+  contacts[index] = updatedContact; 
   await updateContacts(contacts);
   return contacts[index];
 };
