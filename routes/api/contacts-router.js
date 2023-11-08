@@ -3,7 +3,7 @@ import express from "express";
 import contactsCotroller from "../../controllers/contacts-controller.js";
 
 import { validateBody } from "../../decorators/index.js";
-import * as contactSchemas from "../../models/Movie.js"; // іменований експорт всіх схем
+import * as contactSchemas from "../../models/Contact.js"; // іменований експорт всіх схем
 import { isValidId } from "../../middlewares/index.js"; // виклик мідлвари для обробки помилки якщо неправильний id
 
 const addValidateContact = validateBody(contactSchemas.contactAddSchema);

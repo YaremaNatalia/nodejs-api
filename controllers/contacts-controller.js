@@ -1,4 +1,4 @@
-import Contact from "../models/Movie.js";
+import Contact from "../models/Contact.js";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
