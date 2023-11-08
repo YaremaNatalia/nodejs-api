@@ -23,10 +23,6 @@ const add = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  if (!Object.keys(req.body).length) {
-    res.status(400).json({ message: "Missing fields" });
-    return;
-  }
   const { contactId } = req.params;
   const contactToUpdate = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
