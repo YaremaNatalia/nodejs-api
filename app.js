@@ -3,6 +3,7 @@ import logger from "morgan";
 import cors from "cors";
 
 import contactsRouter from "./routes/api/contacts-router.js";
+import authRouter from "./routes/api/auth-router.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(cors()); // midlware що дозволяє кросдоменні зап
 app.use(express.json()); // midlware що записує в req.body запит в форматі json
 
 app.use("/api/contacts", contactsRouter);
+app.use("/api/auth", authRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

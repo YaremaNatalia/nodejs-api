@@ -10,7 +10,7 @@ import { isEmptyBody } from "../../middlewares/index.js"; // виклик мід
 const addValidateContact = validateBody(contactSchemas.contactAddSchema);
 const updateValidateContact = validateBody(contactSchemas.contactUpdateSchema);
 const updateValidateContactFavorite = validateBody(
-  contactSchemas.movieUpdateFavoriteSchema
+  contactSchemas.contactUpdateFavoriteSchema
 );
 
 const contactsRouter = express.Router(); //створення обєкту з групою маршрутів
