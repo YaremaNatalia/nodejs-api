@@ -3,7 +3,11 @@ import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 
 const getAll = async (req, res) => {
-  const contactsList = await Contact.find({}, "-createdAt -updatedAt"); // повернення всіх полів окрім createdAt та updatedAt
+  const { _id: owner } = req.user;
+  const contactsList = await Contact.find(
+    { owner },
+    "-createdAt -updatedAt"
+  ).populate("owner", "email"); // повернення всіх полів окрім createdAt та updatedAt
   res.json(contactsList);
 };
 
@@ -18,7 +22,8 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-  const contactToAdd = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const contactToAdd = await Contact.create({ ...req.body, owner });
   res.status(201).json(contactToAdd);
 };
 

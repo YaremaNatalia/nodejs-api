@@ -5,10 +5,6 @@ import { handleSaveError, runValidateAtUpdate } from "./hooks.js";
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const userSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: [true, "Add your name"],
-    },
     email: {
       type: String,
       match: emailRegexp,
@@ -35,14 +31,11 @@ userSchema.pre("findOneAndUpdate", runValidateAtUpdate); // примусова �
 userSchema.post("findOneAndUpdate", handleSaveError); // коригування статусу помилки (на 400) при оновленні обєкта
 
 export const userSignupSchema = Joi.object({
-  username: Joi.string().required().messages({
-    "any.required": "missing required username field",
-  }),
   email: Joi.string().pattern(emailRegexp).required().messages({
     "any.required": "missing required email field",
   }),
   password: Joi.string().min(6).required().messages({
-    "any.required": "missing required phone field",
+    "any.required": "missing required password field",
   }),
   subscription: Joi.string(),
 });
@@ -52,7 +45,7 @@ export const userSigninSchema = Joi.object({
     "any.required": "missing required email field",
   }),
   password: Joi.string().min(6).required().messages({
-    "any.required": "missing required phone field",
+    "any.required": "missing required password field",
   }),
 });
 

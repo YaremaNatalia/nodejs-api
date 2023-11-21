@@ -4,8 +4,11 @@ import contactsCotroller from "../../controllers/contacts-controller.js";
 
 import { validateBody } from "../../decorators/index.js";
 import * as contactSchemas from "../../models/Contact.js"; // іменований експорт всіх схем
-import { isValidId } from "../../middlewares/index.js"; // виклик мідлвари для обробки помилки якщо неправильний id
-import { isEmptyBody } from "../../middlewares/index.js"; // виклик мідлвари для обробки помилки якщо пусте тіло запиту
+import {
+  authenticate,
+  isValidId,
+  isEmptyBody,
+} from "../../middlewares/index.js"; // виклик мідлвари для перевірки валідності токену, обробки помилки якщо неправильний id, якщо пусте тіло запиту
 
 const addValidateContact = validateBody(contactSchemas.contactAddSchema);
 const updateValidateContact = validateBody(contactSchemas.contactUpdateSchema);
@@ -14,6 +17,8 @@ const updateValidateContactFavorite = validateBody(
 );
 
 const contactsRouter = express.Router(); //створення обєкту з групою маршрутів
+
+contactsRouter.use(authenticate); // додавання до всіх роутів мідлвари для перевірки валідності токену
 
 contactsRouter.get("/", contactsCotroller.getAll);
 
