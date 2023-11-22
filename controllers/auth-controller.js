@@ -33,13 +33,16 @@ const signin = async (req, res) => {
   if (!passwordCompared) {
     throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Password invalid");
   }
-  
-  //  const { _id: id } = user;
+
+  const { _id: id } = user;
+
   const payload = {
-    id: user._id,
+    id,
+    // id: user._id,
   };
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(id, { token });
 
   res.json({
     token,
@@ -50,7 +53,20 @@ const signin = async (req, res) => {
   });
 };
 
+const getCurrent = async (req, res) => {
+  const { email, subscription } = req.user;
+  res.json({ email, subscription });
+};
+
+const signout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+  res.status(204).json();
+};
+
 export default {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
+  getCurrent: ctrlWrapper(getCurrent),
+  signout: ctrlWrapper(signout),
 };

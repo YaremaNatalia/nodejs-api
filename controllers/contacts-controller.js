@@ -4,10 +4,13 @@ import { ctrlWrapper } from "../decorators/index.js";
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const contactsList = await Contact.find(
-    { owner },
-    "-createdAt -updatedAt"
-  ).populate("owner", "email"); // повернення всіх полів окрім createdAt та updatedAt
+  const { page = 1, limit = 20 } = req.query; // пагінація: беремо з реквесту і за замовчуванням перша сторінка, на сторінці 20 обєктів
+  const skip = (page - 1) * limit;
+  // віднімаємо 1 від page, тому що сторінки зазвичай нумеруються з 1, але у програмуванні використовується індексація, яка починається з 0. Таким чином, (page - 1) дає індекс з 0 для першої сторінки, 1 для другої ...
+  const contactsList = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "email"); // повернення всіх полів окрім createdAt та updatedAt
   res.json(contactsList);
 };
 
