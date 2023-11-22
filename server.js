@@ -1,11 +1,13 @@
 import app from "./app.js";
 import mongoose from "mongoose";
 
-const DB_HOST =
-  "mongodb+srv://YaremaNata:o7pESaJvGKKiaesU@cluster0.gw3gcg9.mongodb.net/db-contacts?retryWrites=true&w=majority";
+// process.env налаштування сервера куди можна додати секретну інформацію (ключі, паролі)
+
+// const DB_HOST =
+//   "mongodb+srv://YaremaNata:o7pESaJvGKKiaesU@cluster0.gw3gcg9.mongodb.net/db-contacts?retryWrites=true&w=majority";
 
 mongoose
-  .connect(DB_HOST)
+  .connect(process.env.DB_HOST)
   .then(() => {
     app.listen(3000, () => console.log("Database connection successful"));
   })
