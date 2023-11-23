@@ -3,7 +3,6 @@ import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 import User from "../models/User.js";
 const { JWT_SECRET } = process.env; // ключ для шифрування токену, що міститься в змінних оточення
-// const JWT_SECRET = "N2YVurFAm6zHo1rtDhyY1TKkwON8NYaX";
 
 const authenticate = async (req, res, next) => {
   const { authorization = "" } = req.headers;

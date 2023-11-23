@@ -5,8 +5,6 @@ import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 const { JWT_SECRET } = process.env;
 
-// const JWT_SECRET = "N2YVurFAm6zHo1rtDhyY1TKkwON8NYaX";
-
 const signup = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
