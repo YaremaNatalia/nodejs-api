@@ -1,7 +1,7 @@
 import app from "./app.js";
 import mongoose from "mongoose";
 
-// process.env налаштування сервера куди можна додати секретну інформацію (ключі, паролі)
+// process.env налаштування сервера куди можна додати секретну інформацію (ключі, паролі) lesson 3.1 time 1h-1.25h
 
 const { DB_HOST, PORT } = process.env;
 
