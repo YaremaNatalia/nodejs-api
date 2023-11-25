@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 const { DB_HOST, PORT } = process.env;
 
 mongoose
-  .connect(DB_HOST)
+  .connect(process.env.DB_HOST)
   .then(() => {
     app.listen(PORT, () => console.log("Database connection successful"));
   })
