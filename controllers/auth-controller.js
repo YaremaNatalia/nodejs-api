@@ -28,7 +28,6 @@ const signin = async (req, res) => {
     throw HttpError(401, "Invalid email or password");
   }
   const passwordCompared = await bcrypt.compare(password, user.password);
-
   if (!passwordCompared) {
     throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Password invalid");
   }
@@ -63,9 +62,30 @@ const signout = async (req, res) => {
   res.status(204).json();
 };
 
+const updateSubscription = async (req, res) => {
+  const { _id } = req.user;
+  const { subscription } = req.body;
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    { subscription },
+    { new: true }
+  ); // { new: true } дозволяє одразу отримувати оновлений обєкт без додаткового запиту
+
+  if (!updatedUser) {
+    throw HttpError(404, "User not found");
+  }
+
+  res.json({
+    email: updatedUser.email,
+    subscription: updatedUser.subscription,
+  });
+};
+
 export default {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
+  updateSubscription: ctrlWrapper(updateSubscription),
 };
