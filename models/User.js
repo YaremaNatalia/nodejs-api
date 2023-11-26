@@ -21,6 +21,7 @@ const userSchema = new Schema(
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    avatarURL: String,
     token: String,
   },
   { versionKey: false, timestamps: true }
@@ -38,6 +39,7 @@ export const userSignupSchema = Joi.object({
     "any.required": "missing required password field",
   }),
   subscription: Joi.string(),
+  avatarURL: Joi.string(),
 });
 
 export const userSigninSchema = Joi.object({
@@ -49,10 +51,13 @@ export const userSigninSchema = Joi.object({
   }),
 });
 
-export const contactUpdateSubscriptionSchema = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business").required().messages({
-    "any.required": "missing required subscription field",
-  }),
+export const userUpdateSubscriptionSchema = Joi.object({
+  subscription: Joi.string()
+    .valid("starter", "pro", "business")
+    .required()
+    .messages({
+      "any.required": "missing required subscription field",
+    }),
 });
 
 const User = model("user", userSchema);
