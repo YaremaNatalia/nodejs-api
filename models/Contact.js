@@ -18,6 +18,11 @@ const contactSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 ); // versionKey: false щоб прибрати прописування версії, timestamps: true для прописування дати додавання та оновлення обєкту
@@ -47,7 +52,7 @@ export const contactUpdateSchema = Joi.object({
   favorite: Joi.boolean(),
 });
 
-export const movieUpdateFavoriteSchema = Joi.object({
+export const contactUpdateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
