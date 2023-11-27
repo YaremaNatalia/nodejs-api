@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import request from "supertest";
-import app from "../app.js";
-import User from "../models/User.js";
+import app from "../../app.js";
+import User from "../../models/User.js";
 
 const { DB_TEST_HOST, PORT } = process.env;
 
