@@ -2,7 +2,11 @@ import express from "express";
 import * as userSchemas from "../../models/User.js";
 import { validateBody } from "../../decorators/index.js";
 import authController from "../../controllers/auth-controller.js";
-import { authenticate, upload } from "../../middlewares/index.js";
+import {
+  authenticate,
+  upload,
+  processedAvatar,
+} from "../../middlewares/index.js";
 
 const authRouter = express.Router();
 const userSignupValidate = validateBody(userSchemas.userSignupSchema);
@@ -29,6 +33,7 @@ authRouter.patch(
   "/avatars",
   upload.single("avatar"),
   authenticate,
+  processedAvatar,
   authController.updateAvatar
 );
 

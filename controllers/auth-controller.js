@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
-import Jimp from "jimp";
 import fs from "fs/promises";
 import path from "path";
 import User from "../models/User.js";
@@ -96,15 +95,10 @@ const avatarPath = path.resolve("public", "avatars");
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
-  // const { avatarURL } = req.body;
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarPath, filename);
-  await fs.rename(oldPath, newPath);
+  await fs.rename(oldPath, newPath); // перенесення аватара в нову папку "avatars"
   const avatar = path.join("avatars", filename);
-  // const jimpAvatar = await Jimp.read(avatarURL).then((jimpAvatar) =>
-  //   jimpAvatar.resize(250, 250).getBufferAsync(Jimp.AUTO)
-  // );
-  // const newAvatarURL = `data:image/png;base64,${jimpAvatar.toString("base64")}`;
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     { avatarURL: avatar },
