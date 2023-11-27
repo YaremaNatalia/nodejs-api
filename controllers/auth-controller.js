@@ -110,8 +110,6 @@ const updateAvatar = async (req, res) => {
   }
 
   res.json({
-    // email: updatedUser.email,
-    // subscription: updatedUser.subscription,
     avatarURL: updatedUser.avatarURL,
   });
 };
