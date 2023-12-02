@@ -13,6 +13,7 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short"; //ви
 app.use(logger(formatsLogger)); // виведення в консоль інфо про запити (метод, адреса, статус відповіді)
 app.use(cors()); // midlware що дозволяє кросдоменні запити (з одного домену на інший)
 app.use(express.json()); // midlware що записує в req.body запит в форматі json
+app.use(express.static("public")); // дозволяє віддавати файли на запити з папки public
 
 app.use("/api/contacts", contactsRouter);
 app.use("/users", authRouter);

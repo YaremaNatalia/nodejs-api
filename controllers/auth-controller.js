@@ -1,5 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import gravatar from "gravatar";
+import fs from "fs/promises";
+import path from "path";
 import User from "../models/User.js";
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
@@ -11,12 +14,18 @@ const signup = async (req, res) => {
   if (user) {
     throw HttpError(409, "Email already in use");
   }
+  const avatarURL = gravatar.url(email, { s: "250", r: "pg", d: "identicon" }); // пакет генерування посилання з аватаркою за електронною адресою користувача
   const hashPassword = await bcrypt.hash(password, 10);
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    avatarURL,
+  });
   res.status(201).json({
     user: {
       email: newUser.email,
       subscription: newUser.subscription,
+      avatarURL: newUser.avatarURL,
     },
   });
 };
@@ -82,10 +91,34 @@ const updateSubscription = async (req, res) => {
   });
 };
 
+const avatarPath = path.resolve("public", "avatars");
+
+const updateAvatar = async (req, res) => {
+  const { _id } = req.user;
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(avatarPath, filename);
+  await fs.rename(oldPath, newPath); // перенесення аватара в нову папку "avatars"
+  const avatar = path.join("avatars", filename);
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    { avatarURL: avatar },
+    { new: true }
+  ); // { new: true } дозволяє одразу отримувати оновлений обєкт без додаткового запиту
+
+  if (!updatedUser) {
+    throw HttpError(404, "User not found");
+  }
+
+  res.json({
+    avatarURL: updatedUser.avatarURL,
+  });
+};
+
 export default {
   signup: ctrlWrapper(signup),
   signin: ctrlWrapper(signin),
   getCurrent: ctrlWrapper(getCurrent),
   signout: ctrlWrapper(signout),
   updateSubscription: ctrlWrapper(updateSubscription),
+  updateAvatar: ctrlWrapper(updateAvatar),
 };
