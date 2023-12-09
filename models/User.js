@@ -23,6 +23,14 @@ const userSchema = new Schema(
     },
     avatarURL: String,
     token: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false, timestamps: true }
 ); // versionKey: false щоб прибрати прописування версії, timestamps: true для прописування дати додавання та оновлення обєкту
@@ -38,8 +46,12 @@ export const userSignupSchema = Joi.object({
   password: Joi.string().min(6).required().messages({
     "any.required": "missing required password field",
   }),
-  subscription: Joi.string(),
-  avatarURL: Joi.string(),
+});
+
+export const userEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "any.required": "missing required email field",
+  }),
 });
 
 export const userSigninSchema = Joi.object({
