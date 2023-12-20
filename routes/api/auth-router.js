@@ -3,6 +3,7 @@ import * as userSchemas from "../../models/User.js";
 import { validateBody } from "../../decorators/index.js";
 import authController from "../../controllers/auth-controller.js";
 import {
+  isEmptyBody,
   authenticate,
   upload,
   processedAvatar,
@@ -10,19 +11,37 @@ import {
 
 const authRouter = express.Router();
 const userSignupValidate = validateBody(userSchemas.userSignupSchema);
+const userResendVerifyValidate = validateBody(userSchemas.userEmailSchema);
 const userSigninValidate = validateBody(userSchemas.userSigninSchema);
-const userUpdateSubscription = validateBody(
+const userUpdateSubscriptionValidate = validateBody(
   userSchemas.userUpdateSubscriptionSchema
 );
 
-authRouter.post("/register", userSignupValidate, authController.signup);
-authRouter.post("/login", userSigninValidate, authController.signin);
+authRouter.post(
+  "/register",
+  isEmptyBody,
+  userSignupValidate,
+  authController.signup
+);
+authRouter.get("/verify/:verificationToken", authController.verify);
+authRouter.post(
+  "/verify",
+  isEmptyBody,
+  userResendVerifyValidate,
+  authController.resendVerify
+);
+authRouter.post(
+  "/login",
+  isEmptyBody,
+  userSigninValidate,
+  authController.signin
+);
 authRouter.get("/current", authenticate, authController.getCurrent);
 authRouter.post("/logout", authenticate, authController.signout);
 authRouter.patch(
   "/",
   authenticate,
-  userUpdateSubscription,
+  userUpdateSubscriptionValidate,
   authController.updateSubscription
 );
 
